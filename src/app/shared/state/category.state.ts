@@ -1,0 +1,123 @@
+import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Store, Action, Selector, State, StateContext } from '@ngxs/store';
+import { tap } from 'rxjs';
+
+import {
+  GetCategoriesAction,
+  CreateCategoryAction,
+  EditCategoryAction,
+  UpdateCategoryAction,
+  DeleteCategoryAction,
+} from '../action/category.action';
+import { ICategory } from '../interface/category.interface';
+import { CategoryService } from '../services/category.service';
+import { NotificationService } from '../services/notification.service';
+
+export class CategoryStateModel {
+  category = {
+    data: [] as ICategory[],
+    total: 0,
+  };
+  selectedCategory: ICategory | null;
+}
+
+@State<CategoryStateModel>({
+  name: 'category',
+  defaults: {
+    category: {
+      data: [],
+      total: 0,
+    },
+    selectedCategory: null,
+  },
+})
+@Injectable()
+export class CategoryState {
+  private store = inject(Store);
+  private router = inject(Router);
+  private notificationService = inject(NotificationService);
+  private categoryService = inject(CategoryService);
+
+  @Selector()
+  static category(state: CategoryStateModel) {
+    return state.category;
+  }
+
+  @Selector()
+  static categories(state: CategoryStateModel) {
+    return state.category.data.map(res => {
+      return {
+        label: res?.name,
+        value: res?.id,
+        data: {
+          name: res.name,
+          slug: res.slug,
+          image: res.category_icon ? res.category_icon.original_url : 'assets/images/category.png',
+        },
+      };
+    });
+  }
+
+  @Selector()
+  static selectedCategory(state: CategoryStateModel) {
+    return state.selectedCategory;
+  }
+
+  @Action(GetCategoriesAction)
+  getCategories(ctx: StateContext<CategoryStateModel>, action: GetCategoriesAction) {
+    return this.categoryService.getCategories(action.payload).pipe(
+      tap({
+        next: result => {
+          ctx.patchState({
+            category: {
+              data: result.data,
+              total: result?.total ? result?.total : result?.data?.length,
+            },
+          });
+        },
+        error: err => {
+          throw new Error(err?.error?.message);
+        },
+      }),
+    );
+  }
+
+  @Action(CreateCategoryAction)
+  create(_ctx: StateContext<CategoryStateModel>, _action: CreateCategoryAction) {
+    // Category Create Logic Here
+  }
+
+  @Action(EditCategoryAction)
+  edit(ctx: StateContext<CategoryStateModel>, { id }: EditCategoryAction) {
+    return this.categoryService.getCategories().pipe(
+      tap({
+        next: results => {
+          const state = ctx.getState();
+          const result = results.data.find(category => category.id == id);
+          ctx.patchState({
+            ...state,
+            selectedCategory: result,
+          });
+        },
+        error: err => {
+          throw new Error(err?.error?.message);
+        },
+      }),
+    );
+  }
+
+  @Action(UpdateCategoryAction)
+  update(
+    _ctx: StateContext<CategoryStateModel>,
+    { payload: _payload, id: _id }: UpdateCategoryAction,
+  ) {
+    // Category Update Logic Here
+  }
+
+  @Action(DeleteCategoryAction)
+  delete(_ctx: StateContext<CategoryStateModel>, { id: _id, type: _type }: DeleteCategoryAction) {
+    // Category Delete Logic Here
+  }
+}

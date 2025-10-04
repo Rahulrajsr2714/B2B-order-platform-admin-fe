@@ -1,0 +1,100 @@
+<form class="theme-form theme-form-2 mega-form" [formGroup]="form" (ngSubmit)="submit()">
+  <app-form-fields [label]="'Code'" [for]="'currencyCode'" [required]="true">
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      placeholder="Select currencyCode "
+      [data]="currency_dropdown?.length ? currency_dropdown : []"
+      formControlName="currencyCode"
+      (update)="changeCurrency($event)"
+    />
+    } @if (form.controls['currencyCode'].touched && form.controls['currencyCode'].errors?.['required']) {
+    <div class="invalid-feedback">Currency code is required</div>
+    }
+  </app-form-fields>
+  <app-form-fields [label]="'Symbol'" [for]="'currencySymbol'" [required]="true">
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Enter currency Symbol"
+      name="currencySymbol"
+      formControlName="currencySymbol"
+    />
+    @if (form.controls['currencySymbol'].touched && form.controls['currencySymbol'].errors?.['required']) {
+    <div class="invalid-feedback">Currency symbol is required</div>
+    }
+  </app-form-fields>
+
+  <app-form-fields [label]="'Name'" [for]="'currencyName'" [required]="true">
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Enter currency Symbol"
+      name="currencyName"
+      formControlName="currencyName"
+    />
+    @if (form.controls['currencyName'].touched && form.controls['currencyName'].errors?.['required']) {
+    <div class="invalid-feedback">Currency name is required</div>
+    }
+  </app-form-fields>
+<!--   <app-form-fields [label]="'decimal_number'" [for]="'no_of_decimal'" [required]="false">
+    <input
+      class="form-control"
+      type="number"
+      placeholder="{{ 'enter_number_of_decimal' | translate }}"
+      name="no_of_decimal"
+      formControlName="no_of_decimal"
+    />
+  </app-form-fields> -->
+  <app-form-fields [label]="'Exchange Rate'" [for]="'exchangeRate'" [required]="true">
+    <input
+      class="form-control"
+      type="number"
+      placeholder="Enter Exchange Rate"
+      name="exchangeRate"
+      formControlName="exchangeRate"
+    />
+    <p class="help-text">
+      {{ '*Specify the exchange rate for converting other currencies to US Dollars (USD).' }}
+    </p>
+    @if (form.controls['exchangeRate'].touched &&
+    form.controls['exchangeRate'].errors?.['required']) {
+    <div class="invalid-feedback">Exchange rate is required</div>
+    }
+  </app-form-fields>
+  <app-form-fields [label]="'Symbol Position'" [for]="'currencySymbolPosition'" [required]="true">
+    @if(isBrowser) {
+    <select2
+      class="custom-select"
+      placeholder="Select currency symbol position"
+      [data]="symbolPosition?.length ? symbolPosition : []"
+      formControlName="currencySymbolPosition"
+    />
+    } @if (form?.controls['currencySymbolPosition']?.touched &&
+    form?.controls['currencySymbolPosition']?.errors?.['required']) {
+    <div class="invalid-feedback">Currency symbol is required</div>
+    }
+  </app-form-fields>
+    <app-form-fields [label]="'Is Active'" [for]="'isActive'" [required]="false">
+      <div class="form-check form-switch ps-0">
+        <label class="switch">
+          <input type="checkbox" id="isActive" formControlName="isActive" />
+          <span class="switch-state"></span>
+        </label>
+      </div>
+    </app-form-fields>
+
+
+  <app-form-fields [label]="'Is Base Currency'" [for]="'isBaseCurrency'" [required]="false">
+    <div class="form-check form-switch ps-0">
+      <label class="switch">
+        <input type="checkbox" id="isBaseCurrency" formControlName="isBaseCurrency" />
+        <span class="switch-state"></span>
+      </label>
+    </div>
+  </app-form-fields>
+
+  <app-button [id]="'currency_btn'">
+    {{ (type() === 'create' ? 'Save Currency' : 'Update Currency') }}
+  </app-button>
+</form>
