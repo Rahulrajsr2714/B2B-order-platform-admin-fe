@@ -11,7 +11,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
-import { Select2Data, Select2Module, Select2UpdateEvent } from 'ng-select2-component';
+import {
+  Select2Data,
+  Select2Module,
+  Select2UpdateEvent,
+} from 'ng-select2-component';
 import { Observable, Subject, of } from 'rxjs';
 import { map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 
@@ -53,7 +57,9 @@ export class FormStore {
 
   readonly type = input<string>(undefined);
 
-  countries$: Observable<Select2Data> = inject(Store).select(CountryState.countries);
+  countries$: Observable<Select2Data> = inject(Store).select(
+    CountryState.countries,
+  );
   store$: Observable<IStores> = inject(Store).select(
     StoreState.selectedStore,
   ) as Observable<IStores>;
@@ -98,28 +104,36 @@ export class FormStore {
         twitter: new FormControl(''),
       },
       {
-        validator: CustomValidators.MatchValidator('password', 'password_confirmation'),
+        validator: CustomValidators.MatchValidator(
+          'password',
+          'password_confirmation',
+        ),
       },
     );
   }
 
   get passwordMatchError() {
-    return this.form.getError('mismatch') && this.form.get('password_confirmation')?.touched;
+    return (
+      this.form.getError('mismatch') &&
+      this.form.get('password_confirmation')?.touched
+    );
   }
 
   ngOnInit() {
     this.route.params
       .pipe(
-        switchMap(params => {
+        switchMap((params) => {
           if (!params['id']) return of();
-          this.states$ = this.store.select(StateState.states).pipe(map(filterFn => filterFn(null)));
+          this.states$ = this.store
+            .select(StateState.states)
+            .pipe(map((filterFn) => filterFn(null)));
           return this.store
             .dispatch(new EditStoreAction(params['id']))
             .pipe(mergeMap(() => this.store.select(StoreState.selectedStore)));
         }),
         takeUntil(this.destroy$),
       )
-      .subscribe(store => {
+      .subscribe((store) => {
         this.id = store?.id!;
         this.form.patchValue({
           store_name: store?.store_name,
@@ -150,7 +164,7 @@ export class FormStore {
     if (data && data?.value) {
       this.states$ = this.store
         .select(StateState.states)
-        .pipe(map(filterFn => filterFn(+data?.value)));
+        .pipe(map((filterFn) => filterFn(+data?.value)));
       this.form.controls['state_id'].setValue('');
     } else {
       this.form.controls['state_id'].setValue('');
@@ -158,6 +172,7 @@ export class FormStore {
   }
 
   selectStoreLogo(data: IAttachment) {
+    console.log(data);
     if (!Array.isArray(data)) {
       this.form.controls['store_logo_id'].setValue(data ? data.id : '');
     }

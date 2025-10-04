@@ -3,6 +3,8 @@ import { Router, RouterModule } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
 import {
   ITableClickedAction,
@@ -10,35 +12,35 @@ import {
 } from 'src/app/shared/components/ui/b2b-table/model/b2b-table.interface';
 import { B2BTable } from 'src/app/shared/components/ui/b2b-table/table';
 
-import { ICurrency } from './models/currency.interface';
-import { CurrencyService } from './service/currency.service';
+import { IBrand } from './models/brand.interface';
+import { BrandService } from './service/brand.service';
 import { PageWrapper } from '../../shared/components/page-wrapper/page-wrapper';
 import { Params } from '../../shared/interface/core.interface';
 
 @Component({
-  selector: 'app-currency',
-  templateUrl: './currency.html',
-  styleUrls: ['./currency.scss'],
+  selector: 'app-brand',
+  templateUrl: './brand.html',
+  styleUrls: ['./brand.scss'],
   imports: [PageWrapper, RouterModule, B2BTable, TranslateModule],
 })
-export class Currency {
+export class Brand {
   router = inject(Router);
-  currencyService = inject(CurrencyService);
+  private readonly brandService = inject(BrandService);
   private modalService = inject(NgbModal);
 
   public tableConfig: ITableConfig = {
     columns: [
-      { title: 'No.', dataField: 'no', type: 'no' },
       {
-        title: 'code',
-        dataField: 'currencyCode',
-        sortable: true,
-        sort_direction: 'desc',
+        title: 'Logo',
+        dataField: 'brandThumbnailKey',
+        class: 'tbl-logo-image',
+        type: 'image',
+        key: 'brandName',
       },
-      { title: 'symbol', dataField: 'currencySymbol' },
-      { title: 'exchange_rate', dataField: 'exchangeRate' },
+      { title: 'Brand Code', dataField: 'brandCode' },
+      { title: 'Brand Name', dataField: 'brandName' },
       {
-        title: 'status',
+        title: 'Is Active',
         dataField: 'isActive',
         type: 'switch',
         variant: 'boolean',
@@ -49,21 +51,21 @@ export class Currency {
         label: 'Edit',
         actionToPerform: 'edit',
         icon: 'ri-pencil-line',
-        permission: 'currency.edit',
+        permission: 'store.edit',
       },
       {
         label: 'Delete',
         actionToPerform: 'delete',
         icon: 'ri-delete-bin-line',
-        permission: 'currency.destroy',
+        permission: 'store.destroy',
       },
     ],
-    data: [] as ICurrency[],
+    data: [] as IBrand[],
     total: 0,
   };
 
-  getAllCurencies(payload?: Params) {
-    this.currencyService.getCurrencies(payload).subscribe({
+  getAllBrands(payload?: Params) {
+    this.brandService.getBrands(payload).subscribe({
       next: (resp) => {
         this.tableConfig.data = resp ? resp?.data : [];
         this.tableConfig.total = resp ? resp?.total : 0;
@@ -75,41 +77,40 @@ export class Currency {
   }
 
   onTableChange(data?: Params) {
-    console.warn(data);
-    this.getAllCurencies(data);
+    this.getAllBrands(data);
   }
 
   onActionClicked(action: ITableClickedAction) {
     if (action.actionToPerform == 'edit') this.edit(action.data);
     else if (action.actionToPerform == 'isActive') this.status(action.data);
-    else if (action.actionToPerform == 'delete') this.delete(action.data);
-    /* else if (action.actionToPerform == 'deleteAll') this.deleteAll(action.data); */
+    /*else if (action.actionToPerform == 'delete') this.delete(action.data);
+    else if (action.actionToPerform == 'deleteAll') this.deleteAll(action.data); */
   }
 
-  edit(data: ICurrency) {
+  edit(data: IBrand) {
+    void this.router.navigateByUrl(`/admin/brand/edit/${data.id}`);
+  }
+
+  status(data: IBrand) {
     console.warn(data);
-    void this.router.navigate([`/admin/currency/edit/${data.id}`], {
-      state: { data },
-    });
-  }
-
-  status(data: ICurrency) {
-    console.warn(data);
-    this.currencyService
-      .update(data.id, { isActive: data.isActive })
-      .subscribe({
-        complete: () => {
-          this.modalService.dismissAll();
-        },
-      });
-  }
-
-  delete(data: ICurrency) {
-    this.currencyService.deleteCurrency(data.id).subscribe({
+    this.brandService.toggleActive(data.id).subscribe({
       complete: () => {
         this.modalService.dismissAll();
-        this.getAllCurencies();
       },
     });
   }
+
+  /* approve(data: IStores) {
+    this.store.dispatch(
+      new ApproveStoreStatusAction(data.id, data.is_approved),
+    );
+  }
+
+  delete(data: IStores) {
+    this.store.dispatch(new DeleteStoreAction(data.id));
+  }
+
+  deleteAll(ids: number[]) {
+    this.store.dispatch(new DeleteAllStoreAction(ids));
+  } */
 }

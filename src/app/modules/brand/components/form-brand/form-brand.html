@@ -1,0 +1,63 @@
+<form class="theme-form theme-form-2 mega-form" [formGroup]="form" (ngSubmit)="submit()">
+  <app-form-fields label="Brand Logo" [for]="'logo'" [required]="false">
+    <app-b2b-image-upload
+      [multipleImage]="false"
+      [helpText]="'*Upload image size 500x500px recommended'"
+      [imageUrl]="form.value.logoUrl"
+      (selectedFiles)="selectBrandLogo($event)"
+      />
+    @if (form?.controls['logo'].touched && form.controls['logo'].errors?.['required']) {
+      <div class="invalid-feedback">Brand logo is required</div>
+    }
+  </app-form-fields>
+  <app-form-fields [label]="'Brand Name'" [for]="'brandName'" [required]="true">
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Enter Brand Name"
+      formControlName="brandName"
+    />
+    @if (form?.controls['brandName'].touched && form.controls['brandName'].errors?.['required']) {
+    <div class="invalid-feedback">Brand Name is required</div>
+    }
+  </app-form-fields>
+
+  <app-form-fields [label]="'Brand Code'" [for]="'brandCode'" [required]="true">
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Enter Brand Name"
+      formControlName="brandCode"
+    />
+    @if (form?.controls['brandName'].touched && form.controls['brandName'].errors?.['required']) {
+    <div class="invalid-feedback">Brand Name is required</div>
+    }
+  </app-form-fields>
+  <app-form-fields
+    [label]="'Description'"
+    [for]="'description'"
+    [required]="true"
+  >
+    <textarea
+      class="form-control"
+      placeholder="Enter Description"
+      formControlName="description"
+      rows="3"
+    ></textarea>
+    @if (form.controls['description'].touched && form.controls['description'].errors?.['required'])
+    {
+    <div class="invalid-feedback">Description is required</div>
+    }
+  </app-form-fields>
+  <!-- <app-form-fields [label]="'Is Active'" [for]="'isActive'" [required]="false">
+    <div class="form-check form-switch ps-0">
+      <label class="switch">
+        <input type="checkbox" id="isActive" formControlName="isActive" />
+        <span class="switch-state"></span>
+      </label>
+    </div>
+  </app-form-fields> -->
+  <app-button [id]="'store_btn'">
+    {{ (type() === 'create' ? 'Save Brand' : 'Update Brand') }}
+  </app-button>
+</form>
