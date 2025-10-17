@@ -1,0 +1,1597 @@
+<form
+  class="theme-form theme-form-2 mega-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
+  <div class="vertical-tabs">
+    <div class="row">
+      <div
+        class="col-xl-2 col-lg-3"
+        style="height: calc(100vh - 200px); overflow-y: auto"
+      >
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="active"
+          class="nav-pills"
+          orientation="vertical"
+        >
+          <!-- Basic Information Tab -->
+          <li
+            ngbNavItem="basic"
+            id="basic"
+            [class.is-invalid]="tabError === 'basic'"
+          >
+            <a ngbNavLink><i class="ri-settings-line"></i>General</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="basic">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Product code"
+                  [for]="'productCode'"
+                  [required]="true"
+                >
+                  <input
+                    class="form-control"
+                    id="productCode"
+                    type="text"
+                    placeholder="Enter product code"
+                    formControlName="productCode"
+                    maxlength="100"
+                  />
+                  @if (form.controls['productCode'].touched &&
+                  form.controls['productCode'].errors?.['required']) {
+                  <div class="invalid-feedback">
+                    {{ 'product_code_is_required' | translate }}
+                  </div>
+                  }
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Product name"
+                  [for]="'productName'"
+                  [required]="true"
+                >
+                  <input
+                    class="form-control"
+                    id="productName"
+                    type="text"
+                    placeholder="Enter product name"
+                    formControlName="productName"
+                    maxlength="255"
+                  />
+                  @if (form.controls['productName'].touched &&
+                  form.controls['productName'].errors?.['required']) {
+                  <div class="invalid-feedback">Product name is required</div>
+                  }
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Brand"
+                  [for]="'brandId'"
+                  [required]="false"
+                >
+                  @if(isBrowser) {
+                  <select2
+                    class="custom-select"
+                    placeholder="Select brand"
+                    [data]="select2Brands.length ? select2Brands : []"
+                    formControlName="brandId"
+                    noResultMessage="No Data Found"
+                    id="brandId"
+                    resettable
+                  />
+                  }
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Commercial name"
+                  [for]="'commercialName'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="commercialName"
+                    type="text"
+                    placeholder="Enter commercial name"
+                    formControlName="commercialName"
+                    maxlength="255"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Legal name"
+                  [for]="'legalName'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="legalName"
+                    type="text"
+                    placeholder="Enter legal name"
+                    formControlName="legalName"
+                    maxlength="255"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Short description"
+                  [for]="'shortDescription'"
+                  [required]="false"
+                >
+                  <textarea
+                    class="form-control"
+                    id="shortDescription"
+                    placeholder="Enter short description"
+                    rows="3"
+                    formControlName="shortDescription"
+                  ></textarea>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Description"
+                  [for]="'description'"
+                  [required]="false"
+                >
+                  <div class="custom-editor">
+                    @if(isBrowser) {
+                    <ngx-editor-menu [editor]="editor" />
+                    <ngx-editor
+                      [editor]="editor"
+                      [placeholder]="'Type here...'"
+                      formControlName="description"
+                    />
+                    }
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Summary"
+                  [for]="'summary'"
+                  [required]="false"
+                >
+                  <textarea
+                    class="form-control"
+                    id="summary"
+                    placeholder="Enter summary"
+                    rows="3"
+                    formControlName="summary"
+                  ></textarea>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Product type"
+                  [for]="'productType'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="productType"
+                    type="text"
+                    placeholder="Enter product type"
+                    formControlName="productType"
+                    maxlength="50"
+                  />
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Consumer Unit Tab -->
+          <li
+            ngbNavItem="consumer_unit"
+            id="consumer_unit"
+            [class.is-invalid]="tabError === 'consumer_unit'"
+          >
+            <a ngbNavLink><i class="ri-box-1-line"></i>Cons. Unit</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="consumer_unit">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Ean CU"
+                  [for]="'eanCu'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="eanCu"
+                    type="text"
+                    placeholder="Enter EAN"
+                    formControlName="eanCu"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Barcode CU"
+                  [for]="'barcodeCu'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="barcodeCu"
+                    type="text"
+                    placeholder="Enter barcode"
+                    formControlName="barcodeCu"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Net Weight CU"
+                  [for]="'netWeightCu'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="netWeightCu"
+                    type="number"
+                    step="0.01"
+                    placeholder="Enter net weight"
+                    formControlName="netWeightCu"
+                  />
+                  <p class="help-text">
+                    {{ '*Specify the net weight in grams' }}
+                  </p>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Gross weight CU"
+                  [for]="'grossWeightCu'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="grossWeightCu"
+                    type="number"
+                    step="0.01"
+                    placeholder="Enter gross weight"
+                    formControlName="grossWeightCu"
+                  />
+                  <p class="help-text">
+                    {{ '*Specify the gross weight in grams' }}
+                  </p>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Dimensions CU"
+                  [for]="'dimensionsCu'"
+                  [required]="false"
+                >
+                  <div class="row g-2">
+                    <div class="col-4">
+                      <input
+                        class="form-control"
+                        type="number"
+                        step="0.01"
+                        placeholder="Length (cm)"
+                        formControlName="lengthCu"
+                      />
+                    </div>
+                    <div class="col-4">
+                      <input
+                        class="form-control"
+                        type="number"
+                        step="0.01"
+                        placeholder="Width (cm)"
+                        formControlName="widthCu"
+                      />
+                    </div>
+                    <div class="col-4">
+                      <input
+                        class="form-control"
+                        type="number"
+                        step="0.01"
+                        placeholder="Height (cm)"
+                        formControlName="heightCu"
+                      />
+                    </div>
+                  </div>
+                  <p class="help-text">
+                    {{ '*Dimensions in centimeters (L x W x H)' }}
+                  </p>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Sales Unit Tab -->
+          <li
+            ngbNavItem="sales_unit"
+            id="sales_unit"
+            [class.is-invalid]="tabError === 'sales_unit'"
+          >
+            <a ngbNavLink><i class="ri-stack-line"></i>Sales Unit</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="sales_unit">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'ean_su'"
+                  [for]="'eanSu'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="eanSu"
+                    type="text"
+                    placeholder="Enter EAN"
+                    formControlName="eanSu"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Barcode SU"
+                  [for]="'barcodeSu'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="barcodeSu"
+                    type="text"
+                    placeholder="Enter barcode"
+                    formControlName="barcodeSu"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Pieces per SU"
+                  [for]="'piecesPerSu'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="piecesPerSu"
+                    type="number"
+                    min="1"
+                    placeholder="Enter pieces per SU"
+                    formControlName="piecesPerSu"
+                  />
+                  <p class="help-text">
+                    {{ '*Number of consumer units per sales unit' }}
+                  </p>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Gross weight SU"
+                  [for]="'grossWeightSu'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="grossWeightSu"
+                    type="number"
+                    step="0.01"
+                    placeholder="Enter gross weight"
+                    formControlName="grossWeightSu"
+                  />
+                  <p class="help-text">
+                    {{ '*Specify the gross weight in grams' }}
+                  </p>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Dimensions SU"
+                  [for]="'dimensionsSu'"
+                  [required]="false"
+                >
+                  <div class="row g-2">
+                    <div class="col-4">
+                      <input
+                        class="form-control"
+                        type="number"
+                        step="0.01"
+                        placeholder="Length (cm)"
+                        formControlName="lengthSu"
+                      />
+                    </div>
+                    <div class="col-4">
+                      <input
+                        class="form-control"
+                        type="number"
+                        step="0.01"
+                        placeholder="Width (cm)"
+                        formControlName="widthSu"
+                      />
+                    </div>
+                    <div class="col-4">
+                      <input
+                        class="form-control"
+                        type="number"
+                        step="0.01"
+                        placeholder="Height (cm)"
+                        formControlName="heightSu"
+                      />
+                    </div>
+                  </div>
+                  <p class="help-text">
+                    {{ '*Dimensions in centimeters (L x W x H)' }}
+                  </p>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Layers per pallet"
+                  [for]="'layersPerPallet'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="layersPerPallet"
+                    type="number"
+                    min="1"
+                    placeholder="Enter layers per pallet"
+                    formControlName="layersPerPallet"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Sales units per pallet"
+                  [for]="'salesUnitsPerPallet'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="salesUnitsPerPallet"
+                    type="number"
+                    min="1"
+                    placeholder="Enter sales units per pallet"
+                    formControlName="salesUnitsPerPallet"
+                  />
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Nutrition Tab -->
+          <li
+            ngbNavItem="nutrition"
+            id="nutrition"
+            [class.is-invalid]="tabError === 'nutrition'"
+          >
+            <a ngbNavLink><i class="ri-heart-pulse-line"></i>Nutrition</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="nutrition">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'ingredients'"
+                  [for]="'ingredients'"
+                  [required]="false"
+                >
+                  <textarea
+                    class="form-control"
+                    id="ingredients"
+                    placeholder="Enter ingredients"
+                    rows="4"
+                    formControlName="ingredients"
+                  ></textarea>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'energy'"
+                  [for]="'energy'"
+                  [required]="false"
+                >
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <div class="input-group">
+                        <input
+                          class="form-control"
+                          type="number"
+                          step="0.01"
+                          placeholder="kJ"
+                          formControlName="energyKj"
+                        />
+                        <span class="input-group-text">kJ</span>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="input-group">
+                        <input
+                          class="form-control"
+                          type="number"
+                          step="0.01"
+                          placeholder="kcal"
+                          formControlName="energyKcal"
+                        />
+                        <span class="input-group-text">kcal</span>
+                      </div>
+                    </div>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'fat'"
+                  [for]="'fat'"
+                  [required]="false"
+                >
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      id="fat"
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter fat"
+                      formControlName="fat"
+                    />
+                    <span class="input-group-text">g</span>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Saturated fat"
+                  [for]="'saturatedFat'"
+                  [required]="false"
+                >
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      id="saturatedFat"
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter saturated fat"
+                      formControlName="saturatedFat"
+                    />
+                    <span class="input-group-text">g</span>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'carbohydrates'"
+                  [for]="'carbohydrates'"
+                  [required]="false"
+                >
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      id="carbohydrates"
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter carbohydrates"
+                      formControlName="carbohydrates"
+                    />
+                    <span class="input-group-text">g</span>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'sugars'"
+                  [for]="'sugars'"
+                  [required]="false"
+                >
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      id="sugars"
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter sugars"
+                      formControlName="sugars"
+                    />
+                    <span class="input-group-text">g</span>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'proteins'"
+                  [for]="'proteins'"
+                  [required]="false"
+                >
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      id="proteins"
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter proteins"
+                      formControlName="proteins"
+                    />
+                    <span class="input-group-text">g</span>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'salt'"
+                  [for]="'salt'"
+                  [required]="false"
+                >
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      id="salt"
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter salt"
+                      formControlName="salt"
+                    />
+                    <span class="input-group-text">g</span>
+                  </div>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Dietary Information Tab -->
+          <li
+            ngbNavItem="dietary"
+            id="dietary"
+            [class.is-invalid]="tabError === 'dietary'"
+          >
+            <a ngbNavLink><i class="ri-leaf-line"></i>Dietary</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="dietary">
+                <div class="row">
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      [label]="'halal'"
+                      [for]="'isHalal'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isHalal"
+                            formControlName="isHalal"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      [label]="'kosher'"
+                      [for]="'isKosher'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isKosher"
+                            formControlName="isKosher"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      [label]="'vegetarian'"
+                      [for]="'isVegetarian'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isVegetarian"
+                            formControlName="isVegetarian"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      [label]="'vegan'"
+                      [for]="'isVegan'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isVegan"
+                            formControlName="isVegan"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      [label]="'organic'"
+                      [for]="'isOrganic'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isOrganic"
+                            formControlName="isOrganic"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      [label]="'biological'"
+                      [for]="'isBiological'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isBiological"
+                            formControlName="isBiological"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      [label]="'natural'"
+                      [for]="'isNatural'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isNatural"
+                            formControlName="isNatural"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      label="Gluten free"
+                      [for]="'isGlutenFree'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isGlutenFree"
+                            formControlName="isGlutenFree"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      label="Alcohol free"
+                      [for]="'isAlcoholFree'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isAlcoholFree"
+                            formControlName="isAlcoholFree"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                  <div class="col-md-6">
+                    <app-form-fields
+                      [labelClass]="'form-label-title col-sm-5 mb-0'"
+                      [gridClass]="'col-sm-7'"
+                      label="Gmo free"
+                      [for]="'isGmoFree'"
+                      [required]="false"
+                    >
+                      <div class="form-check form-switch ps-0">
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            id="isGmoFree"
+                            formControlName="isGmoFree"
+                          />
+                          <span class="switch-state"></span>
+                        </label>
+                      </div>
+                    </app-form-fields>
+                  </div>
+                </div>
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-5 mb-0'"
+                  [gridClass]="'col-sm-7'"
+                  label="Artificial additives"
+                  [for]="'hasArtificialAdditives'"
+                  [required]="false"
+                >
+                  <div class="form-check form-switch ps-0">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="hasArtificialAdditives"
+                        formControlName="hasArtificialAdditives"
+                      />
+                      <span class="switch-state"></span>
+                    </label>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Spiciness level"
+                  [for]="'spicinessLevel'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="spicinessLevel"
+                    type="text"
+                    placeholder="Enter spiciness level"
+                    formControlName="spicinessLevel"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Spiciness description"
+                  [for]="'spicinessDescription'"
+                  [required]="false"
+                >
+                  <textarea
+                    class="form-control"
+                    id="spicinessDescription"
+                    placeholder="Enter spiciness description"
+                    rows="3"
+                    formControlName="spicinessDescription"
+                  ></textarea>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Currency & Pricing Tab -->
+          <li
+            ngbNavItem="currency_pricing"
+            id="currency_pricing"
+            [class.is-invalid]="tabError === 'currency_pricing'"
+          >
+            <a ngbNavLink><i class="ri-money-dollar-circle-line"></i>Pricing</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="currency_pricing">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Currency"
+                  [for]="'currencyId'"
+                  [required]="true"
+                >
+                  @if(isBrowser) {
+                  <select2
+                    class="custom-select"
+                    placeholder="Select currency"
+                    [data]="select2Currencies.length ? select2Currencies : []"
+                    formControlName="currencyId"
+                    noResultMessage="No Currency Found"
+                    id="currencyId"
+                    resettable
+                  />
+                  } @if (form.controls['currencyId'].touched &&
+                  form.controls['currencyId'].errors?.['required']) {
+                  <div class="invalid-feedback">Currency is required</div>
+                  }
+                  <p class="help-text">{{ '*Select currency for pricing' }}</p>
+                </app-form-fields>
+
+                <h5 class="text-primary mb-3">Per Piece Pricing</h5>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Purchase Price (Piece)"
+                  [for]="'purchasePricePce'"
+                  [required]="true"
+                >
+                  <input
+                    class="form-control"
+                    id="purchasePricePce"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter purchase price per piece"
+                    formControlName="purchasePricePce"
+                  />
+                  @if (form.controls['purchasePricePce'].touched &&
+                  form.controls['purchasePricePce'].errors?.['required']) {
+                  <div class="invalid-feedback">
+                    Purchase price per piece is required
+                  </div>
+                  } @if (form.controls['purchasePricePce'].touched &&
+                  form.controls['purchasePricePce'].errors?.['min']) {
+                  <div class="invalid-feedback">
+                    Purchase price must be greater than or equal to 0
+                  </div>
+                  }
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="MRP (Piece)"
+                  [for]="'mrpPce'"
+                  [required]="true"
+                >
+                  <input
+                    class="form-control"
+                    id="mrpPce"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter MRP per piece"
+                    formControlName="mrpPce"
+                  />
+                  @if (form.controls['mrpPce'].touched &&
+                  form.controls['mrpPce'].errors?.['required']) {
+                  <div class="invalid-feedback">MRP per piece is required</div>
+                  } @if (form.controls['mrpPce'].touched &&
+                  form.controls['mrpPce'].errors?.['min']) {
+                  <div class="invalid-feedback">
+                    MRP must be greater than or equal to 0
+                  </div>
+                  }
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Selling Price (Piece)"
+                  [for]="'sellingPricePce'"
+                  [required]="true"
+                >
+                  <input
+                    class="form-control"
+                    id="sellingPricePce"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter selling price per piece"
+                    formControlName="sellingPricePce"
+                  />
+                  @if (form.controls['sellingPricePce'].touched &&
+                  form.controls['sellingPricePce'].errors?.['required']) {
+                  <div class="invalid-feedback">
+                    Selling price per piece is required
+                  </div>
+                  } @if (form.controls['sellingPricePce'].touched &&
+                  form.controls['sellingPricePce'].errors?.['min']) {
+                  <div class="invalid-feedback">
+                    Selling price must be greater than or equal to 0
+                  </div>
+                  }
+                </app-form-fields>
+
+                <h5 class="text-primary mb-3 mt-4">Per Case Pricing</h5>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Purchase Price (Case)"
+                  [for]="'purchasePriceCs'"
+                  [required]="true"
+                >
+                  <input
+                    class="form-control"
+                    id="purchasePriceCs"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter purchase price per case"
+                    formControlName="purchasePriceCs"
+                  />
+                  @if (form.controls['purchasePriceCs'].touched &&
+                  form.controls['purchasePriceCs'].errors?.['required']) {
+                  <div class="invalid-feedback">
+                    Purchase price per case is required
+                  </div>
+                  } @if (form.controls['purchasePriceCs'].touched &&
+                  form.controls['purchasePriceCs'].errors?.['min']) {
+                  <div class="invalid-feedback">
+                    Purchase price must be greater than or equal to 0
+                  </div>
+                  }
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="MRP (Case)"
+                  [for]="'mrpCs'"
+                  [required]="true"
+                >
+                  <input
+                    class="form-control"
+                    id="mrpCs"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter MRP per case"
+                    formControlName="mrpCs"
+                  />
+                  @if (form.controls['mrpCs'].touched &&
+                  form.controls['mrpCs'].errors?.['required']) {
+                  <div class="invalid-feedback">MRP per case is required</div>
+                  } @if (form.controls['mrpCs'].touched &&
+                  form.controls['mrpCs'].errors?.['min']) {
+                  <div class="invalid-feedback">
+                    MRP must be greater than or equal to 0
+                  </div>
+                  }
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Selling Price (Case)"
+                  [for]="'sellingPriceCs'"
+                  [required]="true"
+                >
+                  <input
+                    class="form-control"
+                    id="sellingPriceCs"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Enter selling price per case"
+                    formControlName="sellingPriceCs"
+                  />
+                  @if (form.controls['sellingPriceCs'].touched &&
+                  form.controls['sellingPriceCs'].errors?.['required']) {
+                  <div class="invalid-feedback">
+                    Selling price per case is required
+                  </div>
+                  } @if (form.controls['sellingPriceCs'].touched &&
+                  form.controls['sellingPriceCs'].errors?.['min']) {
+                  <div class="invalid-feedback">
+                    Selling price must be greater than or equal to 0
+                  </div>
+                  }
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Storage & Stock Tab -->
+          <li
+            ngbNavItem="storage_stock"
+            id="storage_stock"
+            [class.is-invalid]="tabError === 'storage_stock'"
+          >
+            <a ngbNavLink><i class="ri-archive-line"></i>Stock</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="storage_stock">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Cool fresh"
+                  [for]="'isCoolFresh'"
+                  [required]="false"
+                >
+                  <div class="form-check form-switch ps-0">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="isCoolFresh"
+                        formControlName="isCoolFresh"
+                      />
+                      <span class="switch-state"></span>
+                    </label>
+                    <p class="help-text">
+                      {{ '*Requires refrigerated storage' }}
+                    </p>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'frozen'"
+                  [for]="'isFrozen'"
+                  [required]="false"
+                >
+                  <div class="form-check form-switch ps-0">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="isFrozen"
+                        formControlName="isFrozen"
+                      />
+                      <span class="switch-state"></span>
+                    </label>
+                    <p class="help-text">{{ '*Requires frozen storage' }}</p>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Best before date"
+                  [for]="'bestBeforeDate'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="bestBeforeDate"
+                    type="date"
+                    formControlName="bestBeforeDate"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Expiry date"
+                  [for]="'expiryDate'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="expiryDate"
+                    type="date"
+                    formControlName="expiryDate"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Stock level"
+                  [for]="'stockLevel'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="stockLevel"
+                    type="number"
+                    min="0"
+                    placeholder="Enter stock level"
+                    formControlName="stockLevel"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Stock status"
+                  [for]="'stockStatus'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="stockStatus"
+                    type="text"
+                    placeholder="Enter stock status"
+                    formControlName="stockStatus"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Reorder level"
+                  [for]="'reorderLevel'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="reorderLevel"
+                    type="number"
+                    min="0"
+                    placeholder="Enter reorder level"
+                    formControlName="reorderLevel"
+                  />
+                  <p class="help-text">
+                    {{ '*Stock level at which reorder should be triggered' }}
+                  </p>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Reorder quantity"
+                  [for]="'reorderQuantity'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="reorderQuantity"
+                    type="number"
+                    min="0"
+                    placeholder="Enter reorder quantity"
+                    formControlName="reorderQuantity"
+                  />
+                  <p class="help-text">
+                    {{ '*Quantity to order when reorder level is reached' }}
+                  </p>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Origin & Categories Tab -->
+          <li
+            ngbNavItem="origin_categories"
+            id="origin_categories"
+            [class.is-invalid]="tabError === 'origin_categories'"
+          >
+            <a ngbNavLink><i class="ri-global-line"></i>Origin</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="origin_categories">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Country of origin code"
+                  [for]="'countryOfOriginCode'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="countryOfOriginCode"
+                    type="text"
+                    placeholder="Enter country code"
+                    formControlName="countryOfOriginCode"
+                    maxlength="3"
+                  />
+                  <p class="help-text">
+                    {{ '*ISO 3166-1 alpha-3 country code (e.g., USA, GBR, DEU)'
+                    }}
+                  </p>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Country of origin name"
+                  [for]="'countryOfOriginName'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="countryOfOriginName"
+                    type="text"
+                    placeholder="Enter country name"
+                    formControlName="countryOfOriginName"
+                    maxlength="100"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'categories'"
+                  [for]="'categoryIds'"
+                  [required]="false"
+                >
+                  <app-advanced-dropdown
+                    [position]="'bottom'"
+                    [selectedOption]="selectedCategories"
+                    [options]="categories.length ? categories : []"
+                    displayKey="categoryName"
+                    [subArrayKey]="'subcategories'"
+                    [id]="'categoryIds'"
+                    (selectedItem)="selectCategoryItem($event)"
+                  />
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- SEO Tab -->
+          <li ngbNavItem="seo" id="seo" [class.is-invalid]="tabError === 'seo'">
+            <a ngbNavLink><i class="ri-earth-line"></i>SEO</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="seo">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Custom slug"
+                  [for]="'customSlug'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="customSlug"
+                    type="text"
+                    placeholder="Enter custom slug"
+                    formControlName="customSlug"
+                    maxlength="500"
+                  />
+                  <p class="help-text">
+                    {{ '*URL-friendly version of the product name' }}
+                  </p>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'meta_title'"
+                  [for]="'metaTitle'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="metaTitle"
+                    type="text"
+                    placeholder="Enter meta title"
+                    formControlName="metaTitle"
+                    maxlength="255"
+                  />
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'meta_description'"
+                  [for]="'metaDescription'"
+                  [required]="false"
+                >
+                  <textarea
+                    class="form-control"
+                    id="metaDescription"
+                    placeholder="Enter meta description"
+                    rows="3"
+                    formControlName="metaDescription"
+                  ></textarea>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Images Tab -->
+          <li
+            ngbNavItem="images"
+            id="images"
+            [class.is-invalid]="tabError === 'images'"
+          >
+            <a ngbNavLink><i class="ri-image-line"></i>Images</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="images">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9 mt-3' "
+                  label="Product images"
+                  [for]="'images'"
+                  [required]="false"
+                >
+                  <app-b2b-image-upload
+                    [multipleImage]="true"
+                    [images]="form.get('imageUrls')?.value"
+                    [helpText]="'*Upload product images (recommended size: 600x600px)'"
+                    (selectedFiles)="selectImages($event)"
+                  />
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+
+          <!-- Status Tab -->
+          <li
+            ngbNavItem="status"
+            id="status"
+            [class.is-invalid]="tabError === 'status'"
+          >
+            <a ngbNavLink><i class="ri-checkbox-circle-line"></i>Status</a>
+            <ng-template ngbNavContent>
+              <div class="tab" tab="status">
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'active'"
+                  [for]="'isActive'"
+                  [required]="false"
+                >
+                  <div class="form-check form-switch ps-0">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="isActive"
+                        formControlName="isActive"
+                      />
+                      <span class="switch-state"></span>
+                    </label>
+                    <p class="help-text">
+                      {{ '*Enable or disable this product' }}
+                    </p>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'purchasable'"
+                  [for]="'isPurchasable'"
+                  [required]="false"
+                >
+                  <div class="form-check form-switch ps-0">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="isPurchasable"
+                        formControlName="isPurchasable"
+                      />
+                      <span class="switch-state"></span>
+                    </label>
+                    <p class="help-text">
+                      {{ '*Allow customers to purchase this product' }}
+                    </p>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'trending'"
+                  [for]="'isTrending'"
+                  [required]="false"
+                >
+                  <div class="form-check form-switch ps-0">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="isTrending"
+                        formControlName="isTrending"
+                      />
+                      <span class="switch-state"></span>
+                    </label>
+                    <p class="help-text">
+                      {{ '*Mark this product as trending' }}
+                    </p>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  [label]="'On offer'"
+                  [for]="'isOnOffer'"
+                  [required]="false"
+                >
+                  <div class="form-check form-switch ps-0">
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="isOnOffer"
+                        formControlName="isOnOffer"
+                      />
+                      <span class="switch-state"></span>
+                    </label>
+                    <p class="help-text">
+                      {{ '*Mark this product as being on offer' }}
+                    </p>
+                  </div>
+                </app-form-fields>
+
+                <app-form-fields
+                  [labelClass]="'form-label-title col-sm-3 mb-0'"
+                  [gridClass]="'col-sm-9'"
+                  label="Promotion label"
+                  [for]="'promotionLabel'"
+                  [required]="false"
+                >
+                  <input
+                    class="form-control"
+                    id="promotionLabel"
+                    type="text"
+                    placeholder="Enter promotion label"
+                    formControlName="promotionLabel"
+                  />
+                  <p class="help-text">
+                    {{ '*Custom label for promotions (e.g., "Hot Deal", "New
+                    Arrival")' }}
+                  </p>
+                </app-form-fields>
+              </div>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="col-xl-8 col-lg-9"
+        style="height: calc(100vh - 200px); overflow-y: auto"
+      >
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+    <app-button [id]="'product_btn'">
+      {{ (type() === 'create' ? 'save_product' : 'update_product') | translate
+      }}
+    </app-button>
+  </div>
+</form>

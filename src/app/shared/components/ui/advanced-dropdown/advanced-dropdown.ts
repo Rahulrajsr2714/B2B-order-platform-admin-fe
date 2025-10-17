@@ -18,7 +18,12 @@ import { ClickOutsideDirective } from '../../../directive/out-side-directive';
   templateUrl: './advanced-dropdown.html',
   styleUrls: ['./advanced-dropdown.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ClickOutsideDirective, ReactiveFormsModule, DropdownList, TranslateModule],
+  imports: [
+    ClickOutsideDirective,
+    ReactiveFormsModule,
+    DropdownList,
+    TranslateModule,
+  ],
 })
 export class AdvancedDropdown {
   readonly dropdownContainer = viewChild<ElementRef>('dropdownContainer');
@@ -45,7 +50,7 @@ export class AdvancedDropdown {
     this.term.valueChanges.subscribe((data: any) => {
       if (data) {
         this.optionsData = [];
-        this.options().forEach(item => {
+        this.options().forEach((item) => {
           this.hasValue(item) && this.optionsData.push(item);
         });
       } else {
@@ -68,7 +73,7 @@ export class AdvancedDropdown {
   }
 
   getSelectedData(value: any) {
-    this.options().forEach(item => {
+    this.options().forEach((item) => {
       this.recursiveSelected(
         item,
         value.map(function (x: any) {
@@ -91,7 +96,11 @@ export class AdvancedDropdown {
 
   hasValue(item: any) {
     let valueToReturn = false;
-    if (item[this.displayKey()].toLowerCase().includes(this.term?.value?.toLowerCase())) {
+    if (
+      item[this.displayKey()]
+        .toLowerCase()
+        .includes(this.term?.value?.toLowerCase())
+    ) {
       valueToReturn = true;
     }
     item[this.subArrayKey()]?.length &&
@@ -105,7 +114,8 @@ export class AdvancedDropdown {
 
   toggleDropdown(_event: Event) {
     this.isOpen = !this.isOpen;
-    let selector = this.dropdownContainer().nativeElement.querySelector('.dropdown-open');
+    let selector =
+      this.dropdownContainer().nativeElement.querySelector('.dropdown-open');
     if (this.position() == 'bottom') {
       selector.style.bottom = 'auto';
       selector.style.top = '100%';
@@ -142,7 +152,8 @@ export class AdvancedDropdown {
   subItemClicked(data: any) {
     this.isOpen = true;
     data[this.subArrayKey()]?.length && this.breadCrumbValues.push(data);
-    data[this.subArrayKey()]?.length && (this.optionsData = data[this.subArrayKey()]);
+    data[this.subArrayKey()]?.length &&
+      (this.optionsData = data[this.subArrayKey()]);
   }
 
   changeTo(data: any) {

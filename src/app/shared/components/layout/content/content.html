@@ -1,15 +1,21 @@
 <div class="page-wrapper compact-wrapper" id="pageWrapper">
-  <div class="page-header" [class.close_icon]="navServices.collapseSidebar">
+  <div
+    class="page-header close_icon"
+    [class.close_icon]="navServices.collapseSidebar"
+  >
     <app-header />
   </div>
   <div class="page-body-wrapper">
-    <div class="sidebar-wrapper" [class.close_icon]="navServices.collapseSidebar">
+    <div
+      class="sidebar-wrapper close_icon"
+      [class.close_icon]="navServices.collapseSidebar"
+    >
       <app-sidebar-menu-skeleton [loading]="navServices.sidebarLoading" />
       <app-sidebar />
     </div>
     <div class="page-body">
       <router-outlet />
-      <app-footer />
+      <!-- <app-footer /> -->
     </div>
   </div>
 </div>
