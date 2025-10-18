@@ -1,0 +1,98 @@
+<app-page-wrapper [gridClass]="'col-sm-12'" [title]="type() +'_category'">
+  <form
+    class="theme-form theme-form-2 mega-form"
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+  >
+    <app-form-fields label="Code" [for]="'categoryCode'" [required]="true">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Enter category code"
+        formControlName="categoryCode"
+      />
+      @if (form.controls['categoryCode'].touched &&
+      form.controls['categoryCode'].errors?.['required']) {
+      <div class="invalid-feedback">Category code is required</div>
+      }
+    </app-form-fields>
+    <app-form-fields label="Name" [for]="'categoryName'" [required]="false">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Enter category name"
+        formControlName="categoryName"
+      />
+    </app-form-fields>
+    <app-form-fields
+      label="Description"
+      [for]="'description'"
+      [required]="false"
+    >
+      <textarea
+        class="form-control"
+        placeholder="Enter description"
+        formControlName="description"
+        rows="3"
+      ></textarea>
+    </app-form-fields>
+    <app-form-fields label="Parent" [for]="'parentCategory'" [required]="false">
+      <app-advanced-dropdown
+        [selectSingle]="true"
+        [selectedOption]="category && category.parentCategoryId ? [category.parentCategoryId] : []"
+        [options]="categories()"
+        [subArrayKey]="'children'"
+        (selectedItem)="selectItem($event)"
+        displayKey="categoryName"
+        [id]="'categoryIds'"
+      />
+      <!-- formControlName="parentCategory" -->
+    </app-form-fields>
+
+    <app-form-fields label="Picture" [for]="'picture'" [required]="true">
+      <app-b2b-image-upload
+        [multipleImage]="false"
+        [imageUrl]="form.value.picture"
+        (selectedFiles)="selectCategoryPicture($event)"
+      />
+      <!-- (selectedFiles)="selectBrandLogo($event)" -->
+      @if (form.controls['picture'].touched &&
+      form.controls['picture'].errors?.['required']) {
+      <div class="invalid-feedback">Picture is required</div>
+      }
+    </app-form-fields>
+    <!-- <app-form-fields
+      [label]="'image' | translate "
+      [for]="'image'"
+      [required]="false"
+    >
+      <app-b2b-image-upload
+        [multipleImage]="false"
+        [image]="category?.pictureUrl"
+        (selectedFiles)="selectCategoryImage($event)"
+      />
+    </app-form-fields>
+    <app-form-fields
+      [label]="'icon' | translate "
+      [for]="'icon'"
+      [required]="false"
+    >
+      <app-b2b-image-upload
+        [multipleImage]="false"
+        [image]="category?.category_icon"
+        (selectedFiles)="selectCategoryIcon($event)"
+      />
+    </app-form-fields> -->
+    <app-form-fields label="Status" [for]="'isActive'" [required]="false">
+      <div class="form-check form-switch ps-0">
+        <label class="switch">
+          <input type="checkbox" id="isActive" formControlName="isActive" />
+          <span class="switch-state"></span>
+        </label>
+      </div>
+    </app-form-fields>
+    <app-button [id]="'category_btn'">
+      {{ (type() === 'create' ? 'Save Category' : 'Update Category') }}
+    </app-button>
+  </form>
+</app-page-wrapper>

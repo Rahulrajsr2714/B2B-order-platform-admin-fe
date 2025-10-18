@@ -88,47 +88,6 @@ export class FormBrand {
       });
   }
 
-  /*  ngOnInit() {
-    /* this.route.params
-      .pipe(
-        switchMap((params) => {
-          if (!params['id']) return of();
-          this.states$ = this.store
-            .select(StateState.states)
-            .pipe(map((filterFn) => filterFn(null)));
-          return this.store
-            .dispatch(new EditStoreAction(params['id']))
-            .pipe(mergeMap(() => this.store.select(StoreState.selectedStore)));
-        }),
-        takeUntil(this.destroy$),
-      )
-      .subscribe((store) => {
-        this.id = store?.id!;
-        this.form.patchValue({
-          store_name: store?.store_name,
-          description: store?.description,
-          country_id: store?.country_id,
-          state_id: store?.state_id,
-          city: store?.city,
-          address: store?.address,
-          pincode: store?.pincode,
-          name: store?.vendor?.name,
-          email: store?.vendor?.email,
-          country_code: store?.vendor?.country_code,
-          phone: store?.vendor?.phone,
-          store_logo_id: store?.store_logo_id,
-          hide_vendor_email: store?.hide_vendor_email,
-          hide_vendor_phone: store?.hide_vendor_phone,
-          status: store?.status,
-          facebook: store?.facebook,
-          instagram: store?.instagram,
-          pinterest: store?.pinterest,
-          youtube: store?.youtube,
-          twitter: store?.twitter,
-        });
-      });
-  } */
-
   selectBrandLogo(data: any) {
     console.warn(data);
     if (!Array.isArray(data)) {

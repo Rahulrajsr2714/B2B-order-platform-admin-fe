@@ -1,0 +1,25 @@
+<div class="row m-0">
+  <div class="col-xl-4 p-0">
+    <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'categories'">
+      <div button>
+        @if (type() === 'edit') {
+        <a
+          [routerLink]="[categoryType() === 'post' ? '/blog/category' :'/category']"
+          class="align-items-center btn btn-theme d-flex"
+        >
+          <i class="ri-add-line"></i> Create
+        </a>
+        }
+      </div>
+      <app-tree
+        [data]="allCategory"
+        [recursionKey]="'children'"
+        [type]="type()"
+        [categoryType]="categoryType()"
+      />
+    </app-page-wrapper>
+  </div>
+  <div class="col-xl-8 p-0">
+    <app-form-category [categories]="allCategory" [type]="type()" />
+  </div>
+</div>

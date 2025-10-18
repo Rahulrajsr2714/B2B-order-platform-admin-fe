@@ -20,4 +20,6 @@ export interface ICategory {
   thumbnailUrl: string;
   thumbnailKey: string;
   displayOrder: number;
+  parentCategoryId: string;
+  children: ICategory[];
 }

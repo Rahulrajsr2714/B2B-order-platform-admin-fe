@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from 'public/environments/environment';
 
-import { ICategoryModel } from '../models/category.interface';
+import { ICategory, ICategoryModel } from '../models/category.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +18,48 @@ export class CategoryService {
     return this.http.get<ICategoryModel>(`${environment.API_URL}/category`, {
       params: payload,
     });
+  }
+
+  getAllCategoryAsList(): Observable<ICategory[]> {
+    return this.http.get<ICategory[]>(
+      `${environment.API_URL}/category/list-all`,
+    );
+  }
+
+  getCategoryById(id: string): Observable<ICategory> {
+    return this.http.get<ICategory>(`${environment.API_URL}/category/${id}`);
+  }
+
+  create(payload: Partial<ICategory> & { logo?: File }): Observable<ICategory> {
+    const formData = new FormData();
+    Object.entries(payload).forEach(([key, value]) => {
+      if (key === 'picture' && value instanceof File) {
+        formData.append('picture', value);
+      } else if (value !== undefined && value !== null) {
+        formData.append(key, value as any);
+      }
+    });
+    return this.http.post<ICategory>(
+      `${environment.API_URL}/category`,
+      formData,
+    );
+  }
+
+  update(
+    id: string,
+    payload: Partial<ICategory> & { logo?: File },
+  ): Observable<ICategory> {
+    const formData = new FormData();
+    Object.entries(payload).forEach(([key, value]) => {
+      if (key === 'picture' && value instanceof File) {
+        formData.append('picture', value);
+      } else if (value !== undefined && value !== null) {
+        formData.append(key, value as any);
+      }
+    });
+    return this.http.put<ICategory>(
+      `${environment.API_URL}/category/${id}`,
+      formData,
+    );
   }
 }

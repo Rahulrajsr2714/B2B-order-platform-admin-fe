@@ -13,4 +13,8 @@ export const adminRoutes: Routes = [
     path: 'product',
     loadChildren: () => import('../../modules/b2b-product/b2b-product.routes'),
   },
+  {
+    path: 'category',
+    loadChildren: () => import('../../modules/categories/category.routes'),
+  },
 ];

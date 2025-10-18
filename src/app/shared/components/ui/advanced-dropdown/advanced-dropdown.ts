@@ -73,10 +73,14 @@ export class AdvancedDropdown {
   }
 
   getSelectedData(value: any) {
+    console.log('getSelectedData', value);
     this.options().forEach((item) => {
       this.recursiveSelected(
         item,
         value.map(function (x: any) {
+          if (typeof x == 'string') {
+            return x;
+          }
           return parseInt(x);
         }),
       );
