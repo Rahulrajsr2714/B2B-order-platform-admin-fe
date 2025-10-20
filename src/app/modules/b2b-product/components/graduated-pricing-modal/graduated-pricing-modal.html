@@ -1,0 +1,243 @@
+<ng-template #graduatedPricingModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="graduated-pricing-modal">
+      <i class="ri-price-tag-2-line me-2"></i>
+      Graduated Pricing Management
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="onCancel()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div
+    class="modal-body"
+    style="max-height: 80vh; overflow-y: auto; overflow-x: hidden"
+  >
+    <form [formGroup]="graduatedPricingForm" (ngSubmit)="onSave()">
+      <!-- Product Information -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="product-info-card bg-light p-3 rounded">
+            <h6 class="mb-2">
+              <i class="ri-product-hunt-line me-2"></i>
+              Product Information
+            </h6>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Product Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="productName"
+                  readonly
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Product ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="productId"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Tiers -->
+      <div class="price-tiers-section">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="mb-0">
+            <i class="ri-price-tag-3-line me-2"></i>
+            Price Tiers
+          </h6>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="addPriceTier()"
+          >
+            <i class="ri-add-line me-1"></i>
+            Add Price Tier
+          </button>
+        </div>
+
+        <div formArrayName="prices">
+          @for (priceGroup of pricesArray.controls; track
+          priceGroup.get('id')?.value || $index; let i = $index) {
+          <div
+            [formGroupName]="i"
+            class="price-tier-card border rounded p-3 mb-3 position-relative"
+          >
+            <!-- Remove button -->
+            @if (pricesArray.length > 1 || graduatedPricings.length > 0) {
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm position-absolute top-0 end-0 m-2"
+              (click)="removePriceTier(i, priceGroup.get('id')?.value)"
+              title="Remove Tier"
+              style="z-index: 2"
+            >
+              <i class="ri-delete-bin-line"></i>
+            </button>
+            }
+
+            <div class="row">
+              <!-- Tier Number -->
+              <div class="col-12 mb-2">
+                <h6 class="text-primary mb-0">
+                  <i class="ri-bookmark-line me-1"></i>
+                  Tier {{ i + 1 }}
+                </h6>
+              </div>
+
+              <!-- Min Quantity -->
+              <div class="col-md-2">
+                <label class="form-label">
+                  Min Quantity
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="minQuantity"
+                  min="1"
+                  (blur)="validateQuantityRange(i)"
+                  [class.is-invalid]="pricesArray.at(i).get('minQuantity')?.touched && pricesArray.at(i).get('minQuantity')?.errors"
+                />
+                @if (pricesArray.at(i).get('minQuantity')?.touched &&
+                pricesArray.at(i).get('minQuantity')?.errors) {
+                <div class="invalid-feedback">
+                  {{ getErrorMessage('minQuantity', i) }}
+                </div>
+                }
+              </div>
+
+              <!-- Max Quantity -->
+              <div class="col-md-2">
+                <label class="form-label">Max Quantity</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="maxQuantity"
+                  min="1"
+                  (blur)="validateQuantityRange(i)"
+                  [class.is-invalid]="pricesArray.at(i).get('maxQuantity')?.touched && pricesArray.at(i).get('maxQuantity')?.errors"
+                  placeholder="Unlimited"
+                />
+                @if (pricesArray.at(i).get('maxQuantity')?.touched &&
+                pricesArray.at(i).get('maxQuantity')?.errors) {
+                <div class="invalid-feedback">
+                  {{ getErrorMessage('maxQuantity', i) }}
+                </div>
+                }
+              </div>
+
+              <!-- Unit Price -->
+              <div class="col-md-2">
+                <label class="form-label">
+                  Unit Price
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="unitPrice"
+                  min="0.01"
+                  step="0.01"
+                  [class.is-invalid]="pricesArray.at(i).get('unitPrice')?.touched && pricesArray.at(i).get('unitPrice')?.errors"
+                />
+                @if (pricesArray.at(i).get('unitPrice')?.touched &&
+                pricesArray.at(i).get('unitPrice')?.errors) {
+                <div class="invalid-feedback">
+                  {{ getErrorMessage('unitPrice', i) }}
+                </div>
+                }
+              </div>
+
+              <!-- Unit Code -->
+              <div class="col-md-2">
+                <label class="form-label">
+                  Unit Code
+                  <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  formControlName="unitCode"
+                  [class.is-invalid]="pricesArray.at(i).get('unitCode')?.touched && pricesArray.at(i).get('unitCode')?.errors"
+                >
+                  <option value="PCE">PCE</option>
+                  <option value="CS">CS</option>
+                </select>
+                @if (pricesArray.at(i).get('unitCode')?.touched &&
+                pricesArray.at(i).get('unitCode')?.errors) {
+                <div class="invalid-feedback">
+                  {{ getErrorMessage('unitCode', i) }}
+                </div>
+                }
+              </div>
+
+              <!-- Active Status -->
+              <div class="col-md-1 d-flex justify-content-center">
+                <div class="form-check form-switch px-0 align-self-end">
+                  <label class="switch">
+                    <input
+                      type="checkbox"
+                      id="isActive{{i}}"
+                      formControlName="isActive"
+                    />
+                    <span class="switch-state"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-3 d-flex align-items-end">
+                @if (priceGroup?.get('id')?.value) {
+                <app-button
+                  [id]="'product_btn'"
+                  (click)="onUpdatePrice(priceGroup.value)"
+                  [type]="'button'"
+                  [disabled]="!priceGroup.valid"
+                >
+                  Update
+                </app-button>
+                }@else {
+                <app-button
+                  [id]="'product_btn'"
+                  (click)="onSavePrice(priceGroup.value)"
+                  [type]="'button'"
+                  [disabled]="!priceGroup.valid"
+                >
+                  Save
+                </app-button>
+                }
+              </div>
+            </div>
+
+            <!-- Quantity Range Display -->
+            <div class="row mt-2">
+              <div class="col-12">
+                <small class="text-muted">
+                  <i class="ri-information-line me-1"></i>
+                  Quantity Range: {{ pricesArray.at(i).get('minQuantity')?.value
+                  || 0 }} - {{ pricesArray.at(i).get('maxQuantity')?.value ||
+                  'Unlimited' }}
+                </small>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<app-delete-modal
+  #deleteModal
+  (deleteItem)="onDeleteGp($event?.actionToPerform, $event?.data)"
+/>

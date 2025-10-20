@@ -1,5 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+
+import { ToastrService } from 'ngx-toastr';
 
 import {
   ITableClickedAction,
@@ -7,8 +9,11 @@ import {
 } from 'src/app/shared/components/ui/b2b-table/model/b2b-table.interface';
 import { B2BTable } from 'src/app/shared/components/ui/b2b-table/table';
 
+import { GraduatedPricingModal } from './components/graduated-pricing-modal/graduated-pricing-modal';
 import { IB2bProduct } from './models/b2b-product.interface';
+import { IGraduatedPricingFormData } from './models/graduated-pricing.interface';
 import { B2bProductService } from './service/b2b-product.service';
+import { GraduatedPricingService } from './service/graduated-pricing.service';
 import { PageWrapper } from '../../shared/components/page-wrapper/page-wrapper';
 import { Params } from '../../shared/interface/core.interface';
 
@@ -16,11 +21,18 @@ import { Params } from '../../shared/interface/core.interface';
   selector: 'app-b2b-product',
   templateUrl: './b2b-product.html',
   styleUrls: ['./b2b-product.scss'],
-  imports: [PageWrapper, RouterModule, B2BTable],
+  imports: [PageWrapper, RouterModule, B2BTable, GraduatedPricingModal],
 })
 export class B2bProduct {
   private router = inject(Router);
   private productService = inject(B2bProductService);
+  private graduatedPricingService = inject(GraduatedPricingService);
+
+  private toastr = inject(ToastrService);
+
+  readonly graduatedPricingModal = viewChild<GraduatedPricingModal>(
+    'graduatedPricingModal',
+  );
 
   public tableConfig: ITableConfig = {
     columns: [
@@ -59,6 +71,11 @@ export class B2bProduct {
         icon: 'ri-delete-bin-line',
         permission: 'product.destroy',
       },
+      {
+        label: 'Graduated Pricing',
+        actionToPerform: 'graduated-pricing',
+        icon: 'ri-price-tag-2-line',
+      },
     ],
     data: [] as IB2bProduct[],
     total: 0,
@@ -74,7 +91,7 @@ export class B2bProduct {
         this.tableConfig.data = resp ? resp?.data : [];
         this.tableConfig.total = resp ? resp?.total : 0;
       },
-      error: (err: any) => {
+      error: (err: Error) => {
         console.error(err);
       },
     });
@@ -86,6 +103,8 @@ export class B2bProduct {
 
   onActionClicked(action: ITableClickedAction) {
     if (action.actionToPerform == 'edit') this.edit(action.data);
+    else if (action.actionToPerform == 'graduated-pricing')
+      this.openGraduatedPricing(action.data);
     // else if (action.actionToPerform == 'is_approved') this.approve(action.data);
     // else if (action.actionToPerform == 'status') this.status(action.data);
     // else if (action.actionToPerform == 'delete') this.delete(action.data);
@@ -96,6 +115,10 @@ export class B2bProduct {
   edit(data: IB2bProduct) {
     console.warn(data);
     void this.router.navigateByUrl(`/admin/product/edit/${data.id}`);
+  }
+
+  openGraduatedPricing(product: IB2bProduct) {
+    void this.graduatedPricingModal()?.openModal(product);
   }
 
   // approve(data: IProduct) {

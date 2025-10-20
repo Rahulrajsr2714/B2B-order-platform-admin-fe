@@ -1,6 +1,9 @@
 <app-page-wrapper [gridClass]="'col-sm-12'" [title]="'products'">
   <div button>
-    <a [routerLink]="['/admin/product/create']" class="align-items-center btn btn-theme d-flex">
+    <a
+      [routerLink]="['/admin/product/create']"
+      class="align-items-center btn btn-theme d-flex"
+    >
       <i class="ri-add-line"></i> Add Product
     </a>
   </div>
@@ -13,3 +16,7 @@
     (action)="onActionClicked($event)"
   />
 </app-page-wrapper>
+
+<!-- Graduated Pricing Modal -->
+<app-graduated-pricing-modal #graduatedPricingModal>
+</app-graduated-pricing-modal>

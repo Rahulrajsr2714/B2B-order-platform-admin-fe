@@ -1,0 +1,275 @@
+.graduated-pricing-modal {
+  .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: none;
+
+    .modal-title {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-close {
+      filter: brightness(0) invert(1);
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .product-info-card {
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+
+    h6 {
+      color: #495057;
+      font-weight: 600;
+    }
+
+    .form-control {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+    }
+  }
+
+  .price-tiers-section {
+    h6 {
+      color: #495057;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+
+  .price-tier-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 1px solid #e9ecef !important;
+    transition: all 0.3s ease;
+    position: relative;
+
+    &:hover {
+      border-color: #667eea !important;
+      box-shadow: 0 0.25rem 0.5rem rgba(102, 126, 234, 0.1);
+      transform: translateY(-1px);
+    }
+
+    h6 {
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #495057;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control,
+    .form-select {
+      border: 1px solid #ced4da;
+      transition: all 0.3s ease;
+
+      &:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+      }
+
+      &.is-invalid {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+      }
+    }
+
+    .form-check-input {
+      &:checked {
+        background-color: #667eea;
+        border-color: #667eea;
+      }
+
+      &:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+      }
+    }
+
+    .btn-outline-danger {
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .text-muted {
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .alert-info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    border: 1px solid #b6d4da;
+    border-radius: 0.5rem;
+    color: #0c5460;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  .modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 1rem 1.5rem;
+
+    .btn {
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+
+      &:disabled {
+        background: #6c757d;
+        opacity: 0.65;
+        transform: none;
+      }
+    }
+
+    .btn-outline-secondary {
+      &:hover {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+      }
+    }
+  }
+
+  .invalid-feedback {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .text-danger {
+    color: #dc3545 !important;
+  }
+
+  // Animation for adding/removing tiers
+  .price-tier-card {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .template-buttons {
+    .btn {
+      transition: all 0.3s ease;
+      border-radius: 0.5rem;
+      font-weight: 500;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+      }
+
+      &.btn-outline-primary {
+        &:hover {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-color: #667eea;
+        }
+      }
+
+      &.btn-outline-success {
+        &:hover {
+          background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+          border-color: #28a745;
+        }
+      }
+
+      &.btn-outline-info {
+        &:hover {
+          background: linear-gradient(135deg, #17a2b8 0%, #007bff 100%);
+          border-color: #17a2b8;
+        }
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .modal-dialog {
+      margin: 1rem;
+    }
+
+    .price-tier-card {
+      .row > div {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .product-info-card {
+      .row > div {
+        margin-bottom: 0.75rem;
+      }
+    }
+
+    .template-buttons {
+      .btn {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+// Global modal styles
+.theme-modal {
+  .modal-content {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  }
+
+  &.graduated-pricing-modal {
+    .modal-dialog {
+      max-width: 900px;
+    }
+  }
+}

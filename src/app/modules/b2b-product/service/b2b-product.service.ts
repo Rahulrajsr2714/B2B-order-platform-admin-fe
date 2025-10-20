@@ -32,7 +32,7 @@ export class B2bProductService {
           }
         });
       } else if (value !== undefined && value !== null) {
-        formData.append(key, value as any);
+        formData.append(key, String(value));
       }
     });
     return this.http.post<IB2bProduct>(
@@ -54,7 +54,7 @@ export class B2bProductService {
           }
         });
       } else if (value !== undefined && value !== null) {
-        formData.append(key, value as any);
+        formData.append(key, String(value));
       }
     });
     return this.http.put<IB2bProduct>(

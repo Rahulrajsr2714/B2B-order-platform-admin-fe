@@ -15,7 +15,7 @@
       <app-button
         [class]="'btn-theme btn-md fw-bold btn'"
         [id]="'delete_yes_btn'"
-        (click)="delete(modal)"
+        (click)="delete(modal);modal.dismiss('Cancel')"
       >
         {{ 'yes' | translate }}
       </app-button>
